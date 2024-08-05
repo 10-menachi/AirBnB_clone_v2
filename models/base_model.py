@@ -6,6 +6,7 @@ from datetime import datetime
 
 class BaseModel:
     """A base class for all hbnb models"""
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -15,6 +16,11 @@ class BaseModel:
             self.updated_at = datetime.now()
             storage.new(self)
         else:
+            if 'id' in kwargs:
+                try:
+                    uuid.UUID(kwargs['id'])
+                except ValueError:
+                    raise ValueError("Invalid UUID for 'id'")
             kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
                                                      '%Y-%m-%dT%H:%M:%S.%f')
             kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
@@ -41,4 +47,8 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        try:
+            uuid.UUID(dictionary['id'])
+        except ValueError:
+            raise ValueError("Invalid UUID for 'id'")
         return dictionary
