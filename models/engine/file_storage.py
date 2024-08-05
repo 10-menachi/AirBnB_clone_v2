@@ -17,6 +17,11 @@ class FileStorage:
         key = obj.__class__.__name__ + '.' + obj.id
         self.all()[key] = obj
 
+    def create(self, obj):
+        """Creates a new object"""
+        self.new(obj)
+        self.save()
+
     def save(self):
         """Saves storage dictionary to file"""
         with open(FileStorage.__file_path, 'w') as f:
