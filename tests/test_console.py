@@ -15,8 +15,7 @@ from models import storage
 class TestHBNBCommand(unittest.TestCase):
     """Test the console.py file"""
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',"This test only work in Filestorage")
-
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "This test only work in Filestorage")
     def test_filestorage_create(self):
         """
         Tests create command in filestorage
@@ -36,4 +35,3 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertIn("'name': 'James'", f.getvalue().strip())
             self.assertIn("'age': 17", f.getvalue().strip())
             self.assertIn("'height': 5.9", f.getvalue().strip())
-            

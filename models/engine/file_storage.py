@@ -14,7 +14,8 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        key = obj.__class__.__name__ + '.' + obj.id
+        self.all()[key] = obj
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -22,6 +23,8 @@ class FileStorage:
             temp = {}
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
+                if not isinstance(val.id, int):
+                    val.id = str(val.id)
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
@@ -36,10 +39,10 @@ class FileStorage:
         from models.review import Review
 
         classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
+            'BaseModel': BaseModel, 'User': User, 'Place': Place,
+            'State': State, 'City': City, 'Amenity': Amenity,
+            'Review': Review
+        }
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
